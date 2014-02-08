@@ -15,14 +15,30 @@ public class Triangle {
     Point point2;
     Point point3;
     
-    int[] xCoordinates = new int[9];
+    int[] xCoordinates = new int[3];
+    int[] yCoordinates = new int[3];
+    int[] zCoordinates = new int[3];
+    
+    int[] apparentXCoordinates = new int[3];
+    int[] apparentYCoordinates = new int[3];
+    
     
     public Triangle(Point p, Point q, Point r){
         point1 = p;
         point2 = q;
         point3 = r;
         
-        xCoordinates[1] = point1.x;
+        xCoordinates[0] = point1.x;
+        xCoordinates[1] = point2.x;
+        xCoordinates[2] = point3.x;
+        
+        yCoordinates[0] = point1.y;
+        yCoordinates[1] = point2.y;
+        yCoordinates[2] = point3.y;
+        
+        zCoordinates[0] = point1.z;
+        zCoordinates[1] = point2.z;
+        zCoordinates[2] = point3.z;
     }
     
     public Triangle(int x1, int y1, int z1,
@@ -49,6 +65,14 @@ public class Triangle {
         point1.collapseToPlane();
         point2.collapseToPlane();
         point3.collapseToPlane();
+        
+        apparentXCoordinates[0] =point1.xImage;
+        apparentXCoordinates[1] =point2.xImage;
+        apparentXCoordinates[2] =point3.xImage;
+        
+        apparentYCoordinates[0] =point1.yImage;
+        apparentYCoordinates[1] =point2.yImage;
+        apparentYCoordinates[2] =point3.yImage;
     }
     
     

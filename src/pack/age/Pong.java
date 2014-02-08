@@ -179,6 +179,8 @@ public class Pong extends JPanel{
     }
     
     public void drawImages(Graphics g, Vector<ThreeDObject> scene){ // draw them to screen
-        g.fillPolygon(ints, ints1, WIDTH)scene.get(1).faces.get(1).point1.x;
+        scene.elementAt(1).faces.elementAt(1).collapseToPlane();
+        g.fillPolygon(scene.elementAt(1).faces.elementAt(1).apparentXCoordinates, 
+                scene.elementAt(1).faces.elementAt(1).apparentYCoordinates, 1);
     }
 }

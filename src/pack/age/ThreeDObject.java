@@ -15,10 +15,15 @@ public class ThreeDObject {
         faces = inputFaces;
     }
     public ThreeDObject(){
-        faces = inputFaces;
     }
     
     public void addFace(Triangle newFace){
         faces.add(newFace);
+    }
+    
+    public void collapseToPlane(){
+        for(int i = 0; i < faces.size(); i++){
+            faces.get(i).collapseToPlane();
+        }
     }
 }

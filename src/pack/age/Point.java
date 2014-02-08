@@ -9,19 +9,19 @@ package pack.age;
  * @author Admin
  */
 public class Point {
-    float x;
-    float y;
-    float z;
+    int x;
+    int y;
+    int z;
     
-    float xImage;
-    float yImage;
+    int xImage;
+    int yImage;
     
-    float heightConstant = 2;
-    float widthConstant = 2;
-    float CameraDepth = 1000;
+    double heightConstant = 2;
+    double widthConstant = 2;
+    int CameraDepth = 1000;
     
     
-    public Point(float i, float j, float k){
+    public Point(int i, int j, int k){
         x = i;
         y = j;
         z = k;
@@ -30,8 +30,8 @@ public class Point {
     public void collapseToPlane(){
         float scaling = z/CameraDepth;
         
-        yImage = (y+scaling*Pong.ScreenHeight)/heightConstant;
-        xImage = (x+scaling*Pong.ScreenWidth)/widthConstant;
+        yImage = (int)((y+scaling*Pong.ScreenHeight)/heightConstant);
+        xImage = (int)((x+scaling*Pong.ScreenWidth)/widthConstant);
     }
     
     public void translate(double dx, double dy, double dz){
