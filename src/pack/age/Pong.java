@@ -43,13 +43,13 @@ public class Pong extends JPanel{
         //g.setColor(Color.getHSBColor(rand.nextInt(256), rand.nextInt(128)+128, rand.nextInt(256)));
         //g.drawLine(0,0,500,500); // Draw a line from (10,10) to (150,150)
         if(rects.isEmpty()){
-            for(int i = 0; i < rand.nextInt(101)+400; i++){
+            for(int i = 0; i < rand.nextInt(101)+200; i++){
                 //g.setColor(Color.getHSBColor(rand.nextInt(256), rand.nextInt(128)+128, rand.nextInt(256)));
                 
                 ExtendedRectangle rect = new ExtendedRectangle(rand.nextInt(1680), rand.nextInt(1050), rand.nextInt(100), rand.nextInt(100));
-                rect.H = rand.nextInt(256);
-                rect.S = rand.nextInt(128)+128;
-                rect.B = rand.nextInt(256);
+                rect.H = rand.nextFloat();
+                rect.S = (rand.nextFloat()+1)/2;
+                rect.B = (rand.nextFloat()+1)/2;
                 g.setColor(Color.getHSBColor(rect.H, rect.S, rect.B));
                 g.fillRect(rect.x, rect.y, rect.width, rect.height);
                 rects.addElement(rect);
@@ -61,7 +61,6 @@ public class Pong extends JPanel{
             for(int i = 0; i < rects.size(); i++){
                 ExtendedRectangle rect = rects.get(i);
                 
-                g.setColor(Color.getHSBColor(rect.H, rect.S, rect.B));
                 
                 rect.xVelocity += (float)(rand.nextInt(3) - 1);
                 rect.yVelocity += (float)(rand.nextInt(3) - 1);
@@ -77,14 +76,40 @@ public class Pong extends JPanel{
                     rect.yVelocity = -5;
                 }
                 
-                rect.width += (float)(rand.nextInt(3) - 1)/2;
-                rect.height += (float)(rand.nextInt(3) - 1)/2;
+                rect.width += (float)(rand.nextInt(3) - 1);
+                rect.height += (float)(rand.nextInt(3) - 1);
+                
+                rect.H += rand.nextFloat()/10;
+                rect.S += rand.nextFloat()/10;
+                rect.B += rand.nextFloat()/10;
+                
+                
+                if(rect.S < 0.5){
+                    rect.S =(float) 0.5;
+                } 
+                if(rect.B < 0.5){
+                    rect.B =(float) 0.5;
+                }
+                if(rect.S > 1){
+                    rect.S = 1;
+                } 
+                if(rect.B > 1){
+                    rect.B = 1;
+                }
                 
                 rect.x += rect.xVelocity;
                 rect.y += rect.yVelocity;
                 
+                if(rect.width < 0){
+                    rect.width = -rect.width;
+                }
+                if(rect.height < 0){
+                    rect.height = -rect.height;
+                }
+                
                 keepOnScreen(rect);
                 
+                g.setColor(Color.getHSBColor(rect.H, rect.S, rect.B));
                 g.fillRect(rect.x, rect.y, rect.width, rect.height);
                 
             }

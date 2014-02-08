@@ -9,9 +9,9 @@ import java.awt.Rectangle;
  * @author Admin
  */
 public class ExtendedRectangle extends Rectangle{
-    int H = 0;
-    int S = 0;
-    int B = 0;
+    float H = 0;
+    float S = 0;
+    float B = 0;
     
     float xAcceleration = 0;
     float xVelocity = 0;
