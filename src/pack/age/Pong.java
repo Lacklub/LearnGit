@@ -23,7 +23,7 @@ public class Pong extends JPanel{
         Timer timer = new Timer();
         final JFrame f = frame;
         
-        final Vector<Rectangle> rects = new Vector<Rectangle>();
+        final Vector<ExtendedRectangle> rects = new Vector<ExtendedRectangle>();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -34,7 +34,7 @@ public class Pong extends JPanel{
          }, 20, 20);
     }
     
-    public void paintComponent(Graphics g, Vector<Rectangle> rects){
+    public void paintComponent(Graphics g, Vector<ExtendedRectangle> rects){
         
         Random rand = new Random();
         g.setColor(Color.getHSBColor(0, 255, 0));
@@ -44,8 +44,12 @@ public class Pong extends JPanel{
         if(rects.isEmpty()){
             for(int i = 0; i < rand.nextInt(100)+100; i++){
                 //g.setColor(Color.getHSBColor(rand.nextInt(256), rand.nextInt(128)+128, rand.nextInt(256)));
-                g.setColor(Color.RED);
-                Rectangle rect = new Rectangle(rand.nextInt(1680), rand.nextInt(1050), rand.nextInt(100), rand.nextInt(100));
+                
+                ExtendedRectangle rect = new ExtendedRectangle(rand.nextInt(1680), rand.nextInt(1050), rand.nextInt(100), rand.nextInt(100));
+                rect.H = rand.nextInt(256);
+                rect.S = rand.nextInt(128)+128;
+                rect.B = rand.nextInt(256);
+                g.setColor(Color.getHSBColor(rect.H, rect.S, rect.B));
                 g.fillRect(rect.x, rect.y, rect.width, rect.height);
                 rects.addElement(rect);
             }
@@ -54,11 +58,29 @@ public class Pong extends JPanel{
         {
             
             for(int i = 0; i < rects.size(); i++){
-                Rectangle rect = rects.get(i);
-                g.setColor(Color.RED);
-                rect.x += rand.nextInt(11) - 5;
-                rect.y += rand.nextInt(11) - 5;
-                //g.setColor(Color.getHSBColor(rand.nextInt(256), rand.nextInt(128)+128, rand.nextInt(256)));
+                ExtendedRectangle rect = rects.get(i);
+                
+                g.setColor(Color.getHSBColor(rect.H, rect.S, rect.B));
+                
+                rect.xVelocity += (float)(rand.nextInt(3) - 1);
+                rect.yVelocity += (float)(rand.nextInt(3) - 1);
+                
+                if (rect.xVelocity > 5){
+                    rect.xVelocity = 5;
+                }else if (rect.xVelocity < -5){
+                    rect.xVelocity = -5;
+                }
+                if(rect.yVelocity > 5){
+                    rect.yVelocity = 5;
+                } else if (rect.yVelocity < -5){
+                    rect.yVelocity = -5;
+                }
+                
+                rect.x += rect.xVelocity;
+                rect.y += rect.yVelocity;
+                
+                keepOnScreen(rect);
+                
                 g.fillRect(rect.x, rect.y, rect.width, rect.height);
             }
         }
@@ -74,9 +96,24 @@ public class Pong extends JPanel{
         
         
         Pong panel = new Pong(frame);
-        frame.setContentPane(panel);          
+        frame.setContentPane(panel);
         frame.setVisible(true);
     }
     
+    public void keepOnScreen(ExtendedRectangle rect){
+        if(rect.x > 1680){
+            rect.x = -rect.width;
+        }
+        else if(rect.x + rect.width < 0){
+            rect.x = 1680;
+        }
+        
+        if(rect.y > 1680){
+            rect.y = -rect.height;
+        }
+        else if(rect.y + rect.height < 0){
+            rect.y = 1680;
+        }
+    }
     
 }
