@@ -11,11 +11,17 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.util.*;
 
+
 /*
  *
  * @author Admin
  */
 public class Pong extends JPanel{
+    
+    public static final int ScreenWidth = 1680;
+    public static final int ScreenHeight = 1050;
+    
+    
 
     // Create a constructor method
     public Pong(JFrame frame){
@@ -24,29 +30,40 @@ public class Pong extends JPanel{
         final JFrame f = frame;
         
         final Vector<ExtendedRectangle> rects = new Vector<ExtendedRectangle>();
+        final Vector<ThreeDObject> scene = new Vector<ThreeDObject>();
+        
+        initializeObjectsInSpace(scene);
+        
+        
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 
                 f.removeAll();
-                paintComponent(f.getGraphics(), rects);
+                paintComponent(f.getGraphics(), scene);
                 f.update(f.getGraphics());
             }
          }, 40, 40);
     }
     
-    public void paintComponent(Graphics g, Vector<ExtendedRectangle> rects){
+    public void paintComponent(Graphics g, Vector<ThreeDObject> scene){
         
         Random rand = new Random();
-        g.setColor(Color.getHSBColor(0, 255, 0));
+        g.setColor(Color.getHSBColor(0, 255, 0));//backgraound
         g.fillRect(-10, -10, 2000, 1500);
+        
+        processImages();
+        
+        drawImages(g, scene);
         //g.setColor(Color.getHSBColor(rand.nextInt(256), rand.nextInt(128)+128, rand.nextInt(256)));
         //g.drawLine(0,0,500,500); // Draw a line from (10,10) to (150,150)
+        
+        /*
         if(rects.isEmpty()){
             for(int i = 0; i < rand.nextInt(101)+200; i++){
                 //g.setColor(Color.getHSBColor(rand.nextInt(256), rand.nextInt(128)+128, rand.nextInt(256)));
                 
-                ExtendedRectangle rect = new ExtendedRectangle(rand.nextInt(1680), rand.nextInt(1050), rand.nextInt(100), rand.nextInt(100));
+                ExtendedRectangle rect = new ExtendedRectangle(rand.nextInt(ScreenWidth), rand.nextInt(ScreenHeight), rand.nextInt(100), rand.nextInt(100));
                 rect.H = rand.nextFloat();
                 rect.S = (rand.nextFloat()+1)/2;
                 rect.B = (rand.nextFloat()+1)/2;
@@ -79,9 +96,9 @@ public class Pong extends JPanel{
                 rect.width += (float)(rand.nextInt(3) - 1);
                 rect.height += (float)(rand.nextInt(3) - 1);
                 
-                rect.H += rand.nextFloat()/10;
-                rect.S += rand.nextFloat()/10;
-                rect.B += rand.nextFloat()/10;
+                rect.H += rand.nextFloat()/10 - 0.05;
+                rect.S += rand.nextFloat()/10 - 0.05;
+                rect.B += rand.nextFloat()/10 - 0.05;
                 
                 
                 if(rect.S < 0.5){
@@ -113,14 +130,14 @@ public class Pong extends JPanel{
                 g.fillRect(rect.x, rect.y, rect.width, rect.height);
                 
             }
-        }
+        }*/
         
     }
 
     public static void main(String arg[]){
         JFrame frame = new JFrame("BasicPanel");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1680,1050);
+        frame.setSize(ScreenWidth,ScreenHeight);
         
 
         
@@ -132,19 +149,36 @@ public class Pong extends JPanel{
     }
     
     public void keepOnScreen(ExtendedRectangle rect){
-        if(rect.x > 1680){
+        if(rect.x > ScreenWidth){
             rect.x = -rect.width;
         }
         else if(rect.x + rect.width < 0){
-            rect.x = 1680;
+            rect.x = ScreenWidth;
         }
         
-        if(rect.y > 1680){
+        if(rect.y > ScreenHeight){
             rect.y = -rect.height;
         }
         else if(rect.y + rect.height < 0){
-            rect.y = 1680;
+            rect.y = ScreenHeight;
         }
     }
     
+    public void initializeObjectsInSpace(Vector<ThreeDObject> scene){ //init
+        Point p1 = new Point(0, 0, 0);
+        Point p2 = new Point(1000, 0, 0);
+        Point p3 = new Point(0, 1000, 0);
+        Triangle t1 = new Triangle(p1, p2, p3);
+        ThreeDObject Triangles = new ThreeDObject();
+        Triangles.addFace(t1);
+        scene.add(Triangles);
+    }
+    
+    public void processImages(){ // move everything a frame
+        
+    }
+    
+    public void drawImages(Graphics g, Vector<ThreeDObject> scene){ // draw them to screen
+        g.fillPolygon(ints, ints1, WIDTH)scene.get(1).faces.get(1).point1.x;
+    }
 }
