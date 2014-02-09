@@ -16,10 +16,11 @@ public class Point {
     int xImage;
     int yImage;
     
-    double heightConstant = 2;
-    double widthConstant = 2;
-    int CameraDepth = 1000;
+    double heightConstant = 1;
+    double widthConstant = 1;
+    float CameraDepth = 1000;
     
+    public Boolean isTranslated = false;
     
     public Point(int i, int j, int k){
         x = i;
@@ -27,11 +28,16 @@ public class Point {
         z = k;
     }
     
+    public Point(Point copyPoint){
+        x = copyPoint.x;
+        y = copyPoint.y;
+        z = copyPoint.z;
+    }
+    
     public void collapseToPlane(){
         float scaling = z/CameraDepth;
-        
-        yImage = (int)((y+scaling*Pong.ScreenHeight)/heightConstant);
-        xImage = (int)((x+scaling*Pong.ScreenWidth)/widthConstant);
+        yImage = (int)((y+scaling*TestingGraphics.ScreenHeight/2)/(scaling+1));
+        xImage = (int)((x+scaling*TestingGraphics.ScreenWidth/2)/(scaling+1));
     }
     
     public void translate(double dx, double dy, double dz){

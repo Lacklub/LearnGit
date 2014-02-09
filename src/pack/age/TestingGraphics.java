@@ -16,7 +16,7 @@ import java.util.*;
  *
  * @author Admin
  */
-public class Pong extends JPanel{
+public class TestingGraphics extends JPanel{
     
     public static final int ScreenWidth = 1680;
     public static final int ScreenHeight = 1050;
@@ -24,7 +24,7 @@ public class Pong extends JPanel{
     
 
     // Create a constructor method
-    public Pong(JFrame frame){
+    public TestingGraphics(JFrame frame){
         super();
         Timer timer = new Timer();
         final JFrame f = frame;
@@ -49,11 +49,10 @@ public class Pong extends JPanel{
     public void paintComponent(Graphics g, Vector<ThreeDObject> scene){
         
         Random rand = new Random();
-        g.setColor(Color.getHSBColor(0, 255, 0));//backgraound
+        g.setColor(Color.getHSBColor(0, 1, 0));//backgraound
         g.fillRect(-10, -10, 2000, 1500);
         
-        processImages();
-        
+        processImages(scene);
         drawImages(g, scene);
         //g.setColor(Color.getHSBColor(rand.nextInt(256), rand.nextInt(128)+128, rand.nextInt(256)));
         //g.drawLine(0,0,500,500); // Draw a line from (10,10) to (150,150)
@@ -142,7 +141,7 @@ public class Pong extends JPanel{
 
         
         
-        Pong panel = new Pong(frame);
+        TestingGraphics panel = new TestingGraphics(frame);
         frame.setContentPane(panel);
         frame.setVisible(true);
         
@@ -165,22 +164,40 @@ public class Pong extends JPanel{
     }
     
     public void initializeObjectsInSpace(Vector<ThreeDObject> scene){ //init
-        Point p1 = new Point(0, 0, 0);
+        Point middle = new Point(0, 0, 0);
+        Cube newCube = new Cube(middle, 500);
+        Point p1 = new Point(50, 50, 0);
         Point p2 = new Point(1000, 0, 0);
         Point p3 = new Point(0, 1000, 0);
+        ThreeDObject shape = new ThreeDObject();
         Triangle t1 = new Triangle(p1, p2, p3);
-        ThreeDObject Triangles = new ThreeDObject();
-        Triangles.addFace(t1);
-        scene.add(Triangles);
+        shape.addFace(t1);
+        
+        
+        
+        scene.add(shape);
+        scene.add(newCube);
     }
     
-    public void processImages(){ // move everything a frame
-        
+    public void processImages(Vector<ThreeDObject> scene){ // move everything a frame
+        for(int k = 0; k < scene.size(); k++){
+            for(int i = 0; i < scene.elementAt(k).faces.size(); i++){
+                scene.elementAt(k).translate(0, 0, 1);
+            }
+        }
+        //scene.elementAt(1).rotate(4);
     }
     
     public void drawImages(Graphics g, Vector<ThreeDObject> scene){ // draw them to screen
-        scene.elementAt(1).faces.elementAt(1).collapseToPlane();
-        g.fillPolygon(scene.elementAt(1).faces.elementAt(1).apparentXCoordinates, 
-                scene.elementAt(1).faces.elementAt(1).apparentYCoordinates, 1);
+        
+        for(int k = 0; k < scene.size(); k++){
+            scene.elementAt(k).collapseToPlane();
+            for(int i = 0; i < scene.elementAt(k).faces.size(); i++){
+                g.setColor(scene.elementAt(k).faces.elementAt(i).triangleColor);
+                g.fillPolygon(scene.elementAt(k).faces.elementAt(i).apparentXCoordinates, 
+                        scene.elementAt(k).faces.elementAt(i).apparentYCoordinates, 
+                        scene.elementAt(k).faces.elementAt(i).apparentYCoordinates.length);
+            }
+        }
     }
 }
